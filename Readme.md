@@ -61,8 +61,6 @@ So the workflow can last for hours, days, or longer in real time. However, impor
 - **Each individual execution** of an orchestrator, activity, or entity function is still subject to Azure Functions timeout rules for your hosting plan.
 - The Durable Functions guidance treats timeouts like failures, so long activities should be broken into smaller steps.
 
-This reduces the “15-minute wall” style problem discussed in the paper, but it doesn’t remove all timeout constraints.
-
 ## 4) Communication between functions
 
 Orchestrators and activities “communicate” through the Durable runtime, not direct networking.
