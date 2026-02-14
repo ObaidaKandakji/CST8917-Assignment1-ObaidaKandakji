@@ -1,3 +1,7 @@
+# Assignment 1: Serverless Computing - Critical Analysis
+
+### Obaida Kandakji, 041272028, CST8917
+
 ## Main Argument
 - The paper says today’s “serverless computing” is mostly **Functions-as-a-Service (FaaS)**: developers upload functions and the cloud runs them when triggered.
 - This is **“one step forward”** because FaaS provides **autoscaling** and **pay-as-you-go** pricing. You don’t provision servers, and capacity grows/shrinks with demand.
@@ -90,10 +94,10 @@ In Durable Functions, the runtime keeps a workflow’s source of truth in a task
 This is a usability win: developers write “await activity” style code and the platform handles delivery, retries, and recovery. But the paper’s critique still applies. Durable does not turn functions into stable, directly addressable network endpoints that can exchange low-latency messages. Coordination is mediated by persisted events and queued work items, which is reasonable for coarse workflow steps but is a poor fit for distributed protocols like leader election, membership, consensus, and transaction commit. In other words, it is still storage-mediated coordination.
 
 ## 2) Data-shipping and locality remain outside the model
-Durable Functions mainly fixes workflow state, not data placement. The Durable overview frames it as a feature that lets you write “stateful functions” by managing state, checkpoints, and restarts for you. Orchestrators use event sourcing and replay, which is why orchestrator code must be deterministic. These mechanisms restore control-flow state, but they do not let developers express “run near this dataset,” guarantee reuse of warm caches across many activities, reduce data movement, or raise per-activity I/O bandwidth by placing compute near data. Activities still pull inputs from external services, and Durable adds no workflow-level way to request GPUs or other accelerators. For big-data work, you still need separate data engines; Durable mainly coordinates them.
+Durable Functions mainly fixes workflow state, not data placement. The Durable overview frames it as a feature that lets you write “stateful functions” by managing state, checkpoints, and restarts for you. Orchestrators use event sourcing and replay, which is why orchestrator code must be deterministic. These mechanisms restore control-flow state, but they do not let developers express run near this dataset, guarantee reuse of warm caches across many activities, reduce data movement, or raise per-activity I/O bandwidth by placing compute near data. Activities still pull inputs from external services, and Durable adds no workflow-level way to request GPUs or other accelerators. For big-data work, you still need separate data engines.
 
 ## Verdict
-Durable Functions is real progress on the programming-model axis: it offers first-class orchestration, durable state via history and replay, and built-in management APIs for starting/querying/terminating instances and raising external events. However, it mostly works around the paper’s deeper architectural limitations rather than solving them. It makes serverless workflows practical, but it does not deliver addressable long-running agents with near-network communication or fluid code/data placement for data-intensive systems. So it is progress, but not the leap the paper argues for.
+Durable Functions is useful, but it does not solve the paper’s core problems. It still relies on storage and queue-mediated coordination instead of direct, low-latency messaging between stable endpoints, so it’s a poor fit for distributed protocols like consensus, membership, or transaction commit. It also doesn’t give you a way to control data placement or run compute near data, so data-intensive work still depends on separate big-data systems. Durable functions makes workflows easier and more reliable, but it’s not the architectural leap the paper is arguing for.
 
 
 ## Sources
