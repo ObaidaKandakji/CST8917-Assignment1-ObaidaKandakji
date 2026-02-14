@@ -83,7 +83,7 @@ Durable Functions supports **fan-out/fan-in** for parallel work.
 
 This helps with the paper’s concern that serverless struggles with distributed computing: Durable gives you a built-in coordinator for parallel workloads and failure handling. But it mainly fits “workflow parallelism”. It does not fully solve low-latency, fine-grained distributed protocols because coordination still goes through the durable runtime and storage.
 
----
+
 
 
 # Part 3 — Critical Evaluation
